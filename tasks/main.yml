@@ -1,0 +1,43 @@
+---
+#### Hadoop-LZO-packager seems to be broken
+#- name: checkout hadoop-lzo-packager
+#  git: repo=https://github.com/toddlipcon/hadoop-lzo-packager.git dest=/root/hadoop-lzo-packager
+
+#- name: install prereqs
+#  apt: name={{ item }} state=present
+#  with_items:
+#    - devscripts
+#    - liblzo2-dev
+
+- name: remove default Java
+  apt: name=openjdk-7-jre-headless state=absent
+
+- name: download the RPM
+  shell: cd /root && wget https://hadoop-gpl-packing.googlecode.com/files/hadoop-gpl-packaging-0.6.1-1.x86_64.rpm creates=/root/hadoop-gpl-packaging-0.6.1-1.x86_64.rpm
+
+- name: create .deb
+  shell: cd /root && alien --to-deb hadoop-gpl-packaging-0.6.1-1.x86_64.rpm creates=/root/hadoop-gpl-packaging_0.6.1-2_amd64.deb
+
+- name: install .deb
+  shell: dpkg -i /root/hadoop-gpl-packaging_0.6.1-2_amd64.deb
+
+- name: cp hadoop-lzo.jar
+  shell: cp /opt/hadoopgpl/lib/hadoop-lzo.jar {{ hadoop_distr_prefix }}/lib/hadoop-lzo.jar creates={{ hadoop_distr_prefix }}/lib/hadoop-lzo.jar
+
+- name: cp hadoop-lzo.jar to HBase
+  shell: cp /opt/hadoopgpl/lib/hadoop-lzo.jar {{ hbase_distr_prefix }}/lib/hadoop-lzo.jar creates={{ hbase_distr_prefix }}/lib/hadoop-lzo.jar
+
+- name: create {{ hadoop_distr_prefix }}/lib/native/Linux-amd64-64
+  file: state=directory path={{ hadoop_distr_prefix }}/lib/native/Linux-amd64-64
+
+- name: copy native libs
+  shell: cp /opt/hadoopgpl/native/Linux-amd64-64/* {{ hadoop_distr_prefix }}/lib/native/Linux-amd64-64/ creates={{ hadoop_distr_prefix }}/lib/native/Linux-amd64-64/LzoCompressor.lo
+
+- name: create {{ hbase_distr_prefix }}/lib/native/Linux-amd64-64
+  file: state=directory path={{ hbase_distr_prefix }}/lib/native/Linux-amd64-64
+
+- name: copy native libs
+  shell: cp /opt/hadoopgpl/native/Linux-amd64-64/libgplcompression.* {{ hbase_distr_prefix }}/lib/native/Linux-amd64-64/ creates={{ hbase_distr_prefix }}/lib/native/Linux-amd64-64/libgplcompression.so
+
+- name: install the LZO lib
+  apt: name=liblzo2-2 state=present
