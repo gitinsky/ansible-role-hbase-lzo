@@ -12,11 +12,17 @@
 - name: remove default Java
   apt: name=openjdk-7-jre-headless state=absent
 
+- name: add alien
+  apt: name=alien state=present
+
 - name: download the RPM
   shell: cd /root && wget https://hadoop-gpl-packing.googlecode.com/files/hadoop-gpl-packaging-0.6.1-1.x86_64.rpm creates=/root/hadoop-gpl-packaging-0.6.1-1.x86_64.rpm
 
 - name: create .deb
   shell: cd /root && alien --to-deb hadoop-gpl-packaging-0.6.1-1.x86_64.rpm creates=/root/hadoop-gpl-packaging_0.6.1-2_amd64.deb
+
+- name: add hadoop user
+  user: name=hadoop state=present
 
 - name: install .deb
   shell: dpkg -i /root/hadoop-gpl-packaging_0.6.1-2_amd64.deb
