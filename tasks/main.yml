@@ -11,21 +11,29 @@
 
 - name: remove default Java
   apt: name=openjdk-7-jre-headless state=absent
+  when: "ansible_os_family == 'Debian'"
 
 - name: add alien
   apt: name=alien state=present
+  when: "ansible_os_family == 'Debian'"
 
 - name: download the RPM
   shell: cd /root && wget https://hadoop-gpl-packing.googlecode.com/files/hadoop-gpl-packaging-0.6.1-1.x86_64.rpm creates=/root/hadoop-gpl-packaging-0.6.1-1.x86_64.rpm
 
 - name: create .deb
   shell: cd /root && alien --to-deb hadoop-gpl-packaging-0.6.1-1.x86_64.rpm creates=/root/hadoop-gpl-packaging_0.6.1-2_amd64.deb
+  when: "ansible_os_family == 'Debian'"
 
 - name: add hadoop user
   user: name=hadoop state=present
 
+- name: install .rpm
+  yum: name=/root/hadoop-gpl-packaging-0.6.1-1.x86_64.rpm state=present
+  when: "ansible_os_family == 'RedHat'"
+
 - name: install .deb
   shell: dpkg -i /root/hadoop-gpl-packaging_0.6.1-2_amd64.deb
+  when: "ansible_os_family == 'Debian'"
 
 - name: cp hadoop-lzo.jar
   shell: cp /opt/hadoopgpl/lib/hadoop-lzo.jar {{ hadoop_distr_prefix }}/lib/hadoop-lzo.jar creates={{ hadoop_distr_prefix }}/lib/hadoop-lzo.jar
@@ -47,3 +55,4 @@
 
 - name: install the LZO lib
   apt: name=liblzo2-2 state=present
+  when: "ansible_os_family == 'Debian'"
