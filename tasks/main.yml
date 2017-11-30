@@ -18,7 +18,7 @@
   when: "ansible_os_family == 'Debian'"
 
 - name: download the RPM
-  shell: cd /root && wget https://hadoop-gpl-packing.googlecode.com/files/hadoop-gpl-packaging-0.6.1-1.x86_64.rpm creates=/root/hadoop-gpl-packaging-0.6.1-1.x86_64.rpm
+  shell: cd /root && wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/hadoop-gpl-packing/hadoop-gpl-packaging-0.6.1-1.x86_64.rpm creates=/root/hadoop-gpl-packaging-0.6.1-1.x86_64.rpm
 
 - name: create .deb
   shell: cd /root && alien --to-deb hadoop-gpl-packaging-0.6.1-1.x86_64.rpm creates=/root/hadoop-gpl-packaging_0.6.1-2_amd64.deb
