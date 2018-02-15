@@ -36,16 +36,16 @@
   when: "ansible_os_family == 'Debian'"
 
 - name: cp hadoop-lzo.jar
-  shell: cp /opt/hadoopgpl/lib/hadoop-lzo.jar {{ hadoop_distr_prefix }}/lib/hadoop-lzo.jar creates={{ hadoop_distr_prefix }}/lib/hadoop-lzo.jar
+  shell: cp /opt/hadoopgpl/lib/hadoop-lzo.jar {{ hadoop_distr_prefix }}-{{ env_name }}-{{ hadoop_version }}/lib/hadoop-lzo.jar creates={{ hadoop_distr_prefix }}-{{ env_name }}-{{ hadoop_version }}/lib/hadoop-lzo.jar
 
 - name: cp hadoop-lzo.jar to HBase
-  shell: cp /opt/hadoopgpl/lib/hadoop-lzo.jar {{ hbase_distr_prefix }}/lib/hadoop-lzo.jar creates={{ hbase_distr_prefix }}/lib/hadoop-lzo.jar
+  shell: cp /opt/hadoopgpl/lib/hadoop-lzo.jar {{ hbase_distr_prefix }}-{{ env_name }}-{{ hbase_version }}/lib/hadoop-lzo.jar creates={{ hbase_distr_prefix }}-{{ env_name }}-{{ hbase_version }}/lib/hadoop-lzo.jar
 
-- name: create {{ hadoop_distr_prefix }}/lib/native/Linux-amd64-64
-  file: state=directory path={{ hadoop_distr_prefix }}/lib/native/Linux-amd64-64
+- name: create {{ hadoop_distr_prefix }}-{{ env_name }}-{{ hadoop_version }}/lib/native/Linux-amd64-64
+  file: state=directory path={{ hadoop_distr_prefix }}-{{ env_name }}-{{ hadoop_version }}/lib/native/Linux-amd64-64
 
 - name: copy native libs
-  shell: cp /opt/hadoopgpl/native/Linux-amd64-64/* {{ hadoop_distr_prefix }}/lib/native/Linux-amd64-64/ creates={{ hadoop_distr_prefix }}/lib/native/Linux-amd64-64/LzoCompressor.lo
+  shell: cp /opt/hadoopgpl/native/Linux-amd64-64/* {{ hadoop_distr_prefix }}-{{ env_name }}-{{ hadoop_version }}/lib/native/Linux-amd64-64/ creates={{ hadoop_distr_prefix }}-{{ env_name }}-{{ hadoop_version }}/lib/native/Linux-amd64-64/LzoCompressor.lo
 
 - name: create {{ hbase_distr_prefix }}/lib/native/Linux-amd64-64
   file: state=directory path={{ hbase_distr_prefix }}/lib/native/Linux-amd64-64
