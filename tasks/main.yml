@@ -47,11 +47,11 @@
 - name: copy native libs
   shell: cp /opt/hadoopgpl/native/Linux-amd64-64/* {{ hadoop_distr_prefix }}-{{ env_name }}-{{ hadoop_version }}/lib/native/Linux-amd64-64/ creates={{ hadoop_distr_prefix }}-{{ env_name }}-{{ hadoop_version }}/lib/native/Linux-amd64-64/LzoCompressor.lo
 
-- name: create {{ hbase_distr_prefix }}/lib/native/Linux-amd64-64
-  file: state=directory path={{ hbase_distr_prefix }}/lib/native/Linux-amd64-64
+- name: create {{ hbase_distr_prefix }}-{{ env_name }}-{{ hbase_version }}/lib/native/Linux-amd64-64
+  file: state=directory path={{ hbase_distr_prefix }}-{{ env_name }}-{{ hbase_version }}/lib/native/Linux-amd64-64
 
 - name: copy native libs
-  shell: cp /opt/hadoopgpl/native/Linux-amd64-64/libgplcompression.* {{ hbase_distr_prefix }}/lib/native/Linux-amd64-64/ creates={{ hbase_distr_prefix }}/lib/native/Linux-amd64-64/libgplcompression.so
+  shell: cp /opt/hadoopgpl/native/Linux-amd64-64/libgplcompression.* {{ hbase_distr_prefix }}-{{ env_name }}-{{ hbase_version }}/lib/native/Linux-amd64-64/ creates={{ hbase_distr_prefix }}-{{ env_name }}-{{ hbase_version }}/lib/native/Linux-amd64-64/libgplcompression.so
 
 - name: install the LZO lib
   apt: name=liblzo2-2 state=present
