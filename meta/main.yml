@@ -11,3 +11,5 @@ galaxy_info:
       versions:
         - bionic
         - xenial
+dependencies:
+  - { role: hadoop }
